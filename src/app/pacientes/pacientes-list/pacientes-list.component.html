@@ -1,0 +1,96 @@
+<div class="ui-fluid">
+  <div class="ui-g">
+
+    <!-- DIALOG PRONTUARIOS-->
+    <p-dialog [showHeader]="false" [(visible)]="displayProntuario" [draggable]="true" [modal]="true" [responsive]="true"
+      [contentStyle]="{'max-width':'300px'}" positionTop="120">
+
+      <i class="pi pi-times" style="position: absolute; right: 10px" (click)="onCloseDisplayProntuario()"></i>
+      <h4 style="text-align: center">Prontuários</h4>
+      <p-table [value]="prontuarios">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Especialidade</th>
+            <th>Número</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-obj>
+          <tr>
+            <td style="text-align: center">{{obj.especialidade.nome}}</td>
+            <td style="text-align: center">{{obj.numero | number}}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="2">
+              Nenhum prontuário encontrado.
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-dialog>
+
+
+    <div class="ui-g-8 ui-md-11">
+      <div style="position:relative">
+        <h2 style="margin-top: 0px">Pacientes</h2>
+      </div>
+    </div>
+    <div class="ui-g-4 ui-md-1" style="text-align:right">
+      <button pButton type="button" class="ui-button-success" icon="pi pi-plus" pTooltip="Adicionar"
+        tooltipPosition="top" *ngIf="auth.isAllowed('ROLE_ADD_PACIENTE')" [routerLink]="['/pacientes/novo']"
+        routerLinkActive="active">
+      </button>
+    </div>
+
+    <input pInputText type="text" style="margin-bottom: 10px" autocomplete="off" [(ngModel)]="filter.nome"
+      placeholder="Buscar por nome..." (input)="getAll()">
+
+    <p-table [value]="records" [responsive]="true" [lazy]="true" [paginator]="true" [rows]="filter.size"
+      [totalRecords]="totalRecords" (onLazyLoad)="nextPage($event)" [loading]="loading" loadingIcon="fa fa-spinner">
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 150px">CPF</th>
+          <th>Nome</th>
+          <th style="width: 150px;">Dt. Nascimento</th>
+          <th style="width: 150px;">Telefone</th>
+          <th style="width: 150px"></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-obj>
+        <tr>
+          <td style="text-align: center">{{obj.cpf | cpfCnpj}}</td>
+          <td>{{obj.nome}}</td>
+          <td style="text-align: center;">{{obj.dataNascimento | date: 'dd/MM/yyyy'}}</td>
+          <td style="text-align: center;">{{obj.telefone | fone : 'BR'}}</td>
+          <td>
+            <a pButton style="margin-right: .30em" icon="fa fa-file-text-o" pTooltip="Prontuários" tooltipPosition="top"
+              (click)="onOpenProntuarios(obj)"></a>
+            <a pButton style="margin-right: .30em" icon="fa fa-stethoscope" pTooltip="Consúltas" tooltipPosition="top"
+              (click)="onOpenConsultas(obj)"></a>
+            <a pButton icon="fa fa-pencil" pTooltip="Atualizar" tooltipPosition="top"
+              [routerLink]="['/pacientes', obj.id]"></a>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td [attr.colspan]="5">
+            Nenhum paciente encontrado.
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="loadingbody" let-columns="columns">
+        <tr style="height:34px">
+          <td *ngFor="let col of columns">
+            <div class="loading-text"></div>
+          </td>
+        </tr>
+      </ng-template>
+
+    </p-table>
+  </div>
+</div>

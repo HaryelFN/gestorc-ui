@@ -1,0 +1,166 @@
+<form autocomplete="off" [formGroup]="form" (ngSubmit)="onSave()">
+  <div class="ui-fluid">
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <h2 style="margin-top: 0px">{{ isEdit ? 'Atualizar' : 'Cadastrar' }} {{ title }}</h2>
+      </div>
+    </div>
+
+    <div class="ui-g" style="margin-top: 0px">
+      <div class="ui-g-12 ui-md-6" style="margin-top: 0px">
+
+        <div class="ui-g-12 ui-md-4" formGroupName="pessoa">
+          <span class="ui-float-label">
+            <p-inputMask id="cpf" mask="999.999.999-99" formControlName="cpf" (onBlur)="isCpf()"
+              (onComplete)="removeCharsCpf()" [disabled]="isEdit"></p-inputMask>
+            <label for="cpf">CPF</label>
+          </span>
+          <div *ngIf="submitted && form.get('pessoa.cpf').errors">
+            <div *ngIf="form.get('pessoa.cpf').errors.required" class="ui-message ui-messages-error ui-corner-all">
+              Informe o CPF</div>
+          </div>
+        </div>
+
+        <div class="ui-g-5 ui-md-4" formGroupName="pessoa">
+          <p-dropdown id="dropdown" formControlName="sexo" placeholder="sexo" [options]="sexos" [autoWidth]="false">
+          </p-dropdown>
+          <div *ngIf="submitted && form.get('pessoa.sexo').value == null">
+            <div class="ui-message ui-messages-error ui-corner-all">Selecione o sexo</div>
+          </div>
+        </div>
+
+        <div class="ui-g-7 ui-md-4" formGroupName="pessoa">
+          <span class="ui-float-label">
+            <p-calendar id="dataNascimento" formControlName="dataNascimento" [readonlyInput]="false" [locale]="pt"
+              dateFormat="dd/mm/yy" [showIcon]="true" [touchUI]="detectmob()" [maxDate]="today" (onBlur)="calcIdade()">
+            </p-calendar>
+            <label for="dataNascimento">Data Nascimento</label>
+          </span>
+          <div *ngIf="submitted && form.get('pessoa.dataNascimento').errors">
+            <div *ngIf="form.get('pessoa.dataNascimento').errors.required"
+              class="ui-message ui-messages-error ui-corner-all">Informe a
+              data
+            </div>
+          </div>
+        </div>
+
+        <div class="ui-g-12 ui-md-12" formGroupName="pessoa">
+          <span class="ui-float-label">
+            <input id="nome" type="text" size="30" pInputText formControlName="nome">
+            <label for="nome">Nome</label>
+          </span>
+          <div *ngIf="submitted && form.get('pessoa.nome').errors">
+            <div *ngIf="form.get('pessoa.nome').errors.required" class="ui-message ui-messages-error ui-corner-all">
+              Informe o nome</div>
+          </div>
+        </div>
+
+        <div class="ui-g-12 ui-md-4" formGroupName="pessoa">
+          <span class="ui-float-label">
+            <p-inputMask id="telefone" mask="(99)99999-999?9" formControlName="telefone"></p-inputMask>
+            <label for="telefone">Telefone</label>
+          </span>
+          <div *ngIf="submitted && form.get('pessoa.telefone').errors">
+            <div *ngIf="form.get('pessoa.telefone').errors.required" class="ui-message ui-messages-error ui-corner-all">
+              Informe o
+              telefone.</div>
+          </div>
+        </div>
+
+        <div class="ui-g-12 ui-md-8" formGroupName="pessoa">
+          <span class="ui-float-label">
+            <input pInputText id="email" type="text" formControlName="email" />
+            <label for="email">E-mail</label>
+          </span>
+        </div>
+
+      </div>
+
+      <div class="ui-g-12 ui-md-6" style="margin-top: 0px" formGroupName="pessoa">
+
+        <div formGroupName="endereco">
+
+          <div class="ui-g-8 ui-md-3" formGroupName="cep">
+            <span class="ui-float-label">
+              <p-progressSpinner [hidden]="!loadingFindCep" [style]="{ width: '25px', height: '25px' }">
+              </p-progressSpinner>
+              <p-inputMask mask="99.999-999" formControlName="numero" (onComplete)="removeCharsCep()" (onBlur)="searchCepPesssoa()"></p-inputMask>
+              <label>CEP</label>
+            </span>
+            <div *ngIf="submitted && form.get('pessoa.endereco.cep.numero').value == null">
+              <div class="ui-message ui-messages-error ui-corner-all">Informe o CEP</div>
+            </div>
+          </div>
+
+          <div class="ui-g-4 ui-md-2" formGroupName="cep">
+            <p-dropdown id="dropdown" formControlName="uf" placeholder="UF" [options]="ufs" [autoWidth]="false">
+            </p-dropdown>
+            <div *ngIf="submitted && form.get('pessoa.endereco.cep.uf').value == null">
+              <div class="ui-message ui-messages-error ui-corner-all">Selecione a UF</div>
+            </div>
+          </div>
+
+          <div class="ui-g-5 ui-md-7" formGroupName="cep">
+            <span class="ui-float-label">
+              <input pInputText id="cidade" type="text" formControlName="cidade" />
+              <label for="cidade">Cidade</label>
+            </span>
+            <div
+              *ngIf="submitted && form.get('pessoa.endereco.cep.cidade').value == null || form.get('pessoa.endereco.cep.cidade').value == ''">
+              <div class="ui-message ui-messages-error ui-corner-all">Informe a cidade</div>
+            </div>
+          </div>
+
+          <div class="ui-g-7 ui-md-4">
+            <span class="ui-float-label">
+              <input pInputText id="bairro" type="text" formControlName="bairro" />
+              <label for="bairro">Bairro</label>
+            </span>
+            <div
+              *ngIf="submitted && form.get('pessoa.endereco.bairro').value == null || form.get('pessoa.endereco.bairro').value == ''">
+              <div class="ui-message ui-messages-error ui-corner-all">Informe o bairro</div>
+            </div>
+          </div>
+
+          <div class="ui-g-9 ui-md-6">
+            <span class="ui-float-label">
+              <input pInputText id="logradouro" type="text" formControlName="logradouro" />
+              <label for="logradouro">Logradouro</label>
+            </span>
+            <div
+              *ngIf="submitted && form.get('pessoa.endereco.logradouro').value == null || form.get('pessoa.endereco.logradouro').value == ''">
+              <div class="ui-message ui-messages-error ui-corner-all">Informe o logradouro.</div>
+            </div>
+          </div>
+
+          <div class="ui-g-3 ui-md-2">
+            <span class="ui-float-label">
+              <input pInputText id="numero" type="text" formControlName="numero" />
+              <label for="numero">Número</label>
+            </span>
+          </div>
+
+          <div class="ui-g-12 ui-md-12">
+            <span class="ui-float-label">
+              <input pInputText id="complemento" type="text" formControlName="complemento" />
+              <label for="complemento">Complemento</label>
+            </span>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="ui-g">
+      <div class="ui-g-6 ui-md-2">
+        <button pButton type="button" icon="fa fa-arrow-left" label="Voltar" class="ui-button-info"
+          [routerLink]="['/pacientes']"></button>
+      </div>
+      <div class="ui-g-6 ui-md-offset-8 ui-md-2">
+        <button pButton type="submit" icon="{{ isEdit ? 'fa fa-pencil' : 'pi pi-plus' }}"
+          label="{{ isEdit ? 'Atualizar' : 'Cadastrar' }}" class="ui-button-success" [disabled]="!form.dirty"></button>
+      </div>
+    </div>
+  </div>
+</form>

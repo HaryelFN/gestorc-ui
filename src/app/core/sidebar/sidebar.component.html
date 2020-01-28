@@ -1,0 +1,47 @@
+<div class="layout-sidebar" [ngClass]="{'layout-sidebar-active':app.mobileMenuActive}">
+  <ul class="layout-menu" (click)="app.hideMobileMenu($event)">
+
+    <li>
+      <a [routerLink]="['/dashbord']" routerLinkActive="active" *ngIf="auth.isAllowed('ROLE_FIND_PACIENTE')">
+        <i class="fa fa-line-chart"></i>
+        <span>Dashbord</span>
+      </a>
+    </li>
+
+    <li>
+      <a [routerLink]="['/pacientes']" routerLinkActive="active" *ngIf="auth.isAllowed('ROLE_FIND_PACIENTE')">
+        <i class="fa fa-id-card-o"></i>
+        <span>Pacientes</span>
+      </a>
+    </li>
+
+    <li>
+      <a [routerLink]="['/especialidades']" routerLinkActive="active" *ngIf="auth.isAllowed('ROLE_FIND_ESPECIALIDADE')">
+        <i class="fa fa-medkit"></i>
+        <span>Especialidades</span>
+      </a>
+    </li>
+
+    <li>
+      <a [routerLink]="['/medicos']" routerLinkActive="active" *ngIf="auth.isAllowed('ROLE_FIND_MEDICO')">
+        <i class="fa fa-user-md"></i>
+        <span>Médicos</span>
+      </a>
+    </li>
+
+    <li>
+      <a [routerLink]="['/funcionarios']" routerLinkActive="active" *ngIf="auth.isAllowed('ROLE_FIND_FUNCIONARIO')">
+        <i class="fa fa-users"></i>
+        <span>Funcionários</span>
+      </a>
+    </li>
+
+    <li>
+      <a [routerLink]="['/departamentos']" routerLinkActive="active" *ngIf="auth.isAllowed('ROLE_FIND_DEPARTAMENTO')">
+        <i class="fa fa-building"></i>
+        <span>Departamentos</span>
+      </a>
+    </li>
+
+  </ul>
+</div>

@@ -1,0 +1,33 @@
+<form autocomplete="off" [formGroup]="form" (ngSubmit)="onSave()">
+  <div class="ui-fluid">
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <h2 style="margin-top: 0px">{{ isEdit ? 'Atualizar' : 'Cadastrar' }} {{ title }}</h2>
+      </div>
+    </div>
+
+    <div class="ui-g" style="margin-top: 0px">
+      <div class="ui-g-12 ui-md-12">
+        <span class="ui-float-label">
+          <input id="nome" type="text" size="30" pInputText formControlName="nome">
+          <label for="nome">Nome</label>
+        </span>
+        <div *ngIf="submitted && f.nome.errors">
+          <div *ngIf="f.nome.errors.required" class="ui-message ui-messages-error ui-corner-all">
+            Informe o nome</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ui-g">
+      <div class="ui-g-6 ui-md-2">
+        <button pButton type="button" icon="fa fa-arrow-left" label="Voltar" class="ui-button-info"
+          [routerLink]="['/especialidades']"></button>
+      </div>
+      <div class="ui-g-6 ui-md-offset-8 ui-md-2">
+        <button pButton type="submit" icon="{{ isEdit ? 'fa fa-pencil' : 'pi pi-plus' }}"
+          label="{{ isEdit ? 'Editar' : 'Cadastrar' }}" class="ui-button-success" [disabled]="!form.dirty"></button>
+      </div>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,31 @@
+<div class="container" style="max-width: 400px; margin: auto">
+
+  <form autocomplete="off" #f="ngForm">
+    <div class="ui-g ui-fluid">
+
+      <div class="ui-g-12">
+        <h1>Login</h1>
+      </div>
+
+      <div class="ui-g-12">
+        <input pInputText type="email" name="usuario" placeholder="Usuário" ngModel required #usuario>
+      </div>
+
+      <div class="ui-g-12">
+        <input pInputText type="password" name="senha" placeholder="Senha" ngModel required #senha>
+      </div>
+
+      <div class="ui-g-12">
+        <button pButton type="button" autofocus class="ui-button-success" label="Entrar" [disabled]="!f.valid"
+          (click)="onLogin(usuario.value, senha.value); senha.value = '';"></button>
+      </div>
+
+      <!--  <div class="ui-g-12">
+        <p style="text-align: center">New to cliner-ui?
+          <a [routerLink]="['/signup']" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Create an account.</a>
+        </p>
+      </div> -->
+
+    </div>
+  </form>
+</div>

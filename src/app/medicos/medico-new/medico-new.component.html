@@ -1,0 +1,142 @@
+<form autocomplete="off" [formGroup]="form" (ngSubmit)="onSave()">
+  <div class="ui-fluid">
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <h2 style="margin-top: 0px">{{ isEdit ? 'Atualizar' : 'Cadastrar' }} {{ title }}</h2>
+      </div>
+    </div>
+
+    <div class="ui-g" style="margin-top: 0px">
+      <div class="ui-g-12 ui-md-6" style="margin-top: 0px">
+
+        <div class="ui-g-6 ui-md-3" formGroupName="pessoa">
+          <p-dropdown id="dropdown" formControlName="sexo" placeholder="sexo" [options]="sexos" [autoWidth]="false">
+          </p-dropdown>
+          <div *ngIf="submitted && form.get('pessoa.sexo').value == null">
+            <div class="ui-message ui-messages-error ui-corner-all">Selecione o sexo</div>
+          </div>
+        </div>
+
+        <div class="ui-g-6 ui-md-4" formGroupName="pessoa">
+          <span class="ui-float-label">
+            <p-calendar id="dataNascimento" formControlName="dataNascimento" [readonlyInput]="true" [locale]="pt"
+              dateFormat="dd/mm/yy" [showIcon]="true" [touchUI]="detectmob()"></p-calendar>
+            <label for="dataNascimento">Data Nascimento</label>
+          </span>
+          <div *ngIf="submitted && f.dataNascimento.errors">
+            <div *ngIf="f.dataNascimento.errors.required" class="ui-message ui-messages-error ui-corner-all">Informe a
+              data
+            </div>
+          </div>
+        </div>
+
+        <div class="ui-g-8 ui-md-3">
+          <span class="ui-float-label">
+            <input id="crm" type="text" size="30" pInputText formControlName="crm">
+            <label for="crm">CRM</label>
+          </span>
+          <div *ngIf="submitted && f.crm.errors">
+            <div *ngIf="f.crm.errors.required" class="ui-message ui-messages-error ui-corner-all">
+              Informe o CRM</div>
+          </div>
+        </div>
+
+        <div class="ui-g-4 ui-md-2">
+          <p-dropdown id="dropdown" formControlName="ufCrm" placeholder="UF" [options]="ufs" [autoWidth]="false">
+          </p-dropdown>
+          <div *ngIf="submitted && form.get('pessoa.endereco.cep.uf').value == null">
+            <div class="ui-message ui-messages-error ui-corner-all">Selecione a UF</div>
+          </div>
+        </div>
+
+        <div class="ui-g-12 ui-md-12" formGroupName="pessoa">
+          <span class="ui-float-label">
+            <input id="nome" type="text" size="30" pInputText formControlName="nome">
+            <label for="nome">Nome</label>
+          </span>
+          <div *ngIf="submitted && form.get('pessoa.nome').errors">
+            <div *ngIf="form.get('pessoa.nome').errors.required" class="ui-message ui-messages-error ui-corner-all">
+              Informe o nome</div>
+          </div>
+        </div>
+
+        <div class="ui-g-12 ui-md-4" formGroupName="pessoa">
+          <span class="ui-float-label">
+            <p-inputMask id="telefone" mask="(99)99999-999?9" formControlName="telefone"></p-inputMask>
+            <label for="telefone">Telefone</label>
+          </span>
+          <div *ngIf="submitted && form.get('pessoa.telefone').errors">
+            <div *ngIf="form.get('pessoa.telefone').errors.required" class="ui-message ui-messages-error ui-corner-all">
+              Informe o
+              telefone.</div>
+          </div>
+        </div>
+
+        <div class="ui-g-12 ui-md-8" formGroupName="pessoa">
+          <span class="ui-float-label">
+            <input pInputText id="email" type="text" formControlName="email" />
+            <label for="email">E-mail</label>
+          </span>
+        </div>
+
+      </div>
+
+      <div class="ui-g-12 ui-md-6" style="margin-top: 0px">
+
+        <p-table #dt [value]="especialidades" [globalFilterFields]="['nome']" [loading]="loading" loadingIcon="fa fa-spinner" [scrollable]="true"
+          scrollHeight="100px">
+
+          <ng-template pTemplate="caption">
+            <input type="text" pInputText placeholder="Buscar especialidade..." (input)="dt.filterGlobal($event.target.value, 'contains')">
+          </ng-template>
+
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Nome</th>
+              <th style="width: 50px;"></th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-rowData>
+            <tr>
+              <td>{{rowData.nome}}</td>
+              <td style="width: 50px; text-align: center">
+                <p-checkbox name="group1" [(ngModel)]="rowData.checked" binary="true" (onChange)="pagSelected(rowData)"
+                  [ngModelOptions]="{standalone: true}"></p-checkbox>
+              </td>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td [attr.colspan]="2">
+                Nenhum especialidade encontrada.
+              </td>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="loadingbody" let-columns="columns">
+            <tr style="height:34px">
+              <td *ngFor="let col of columns">
+                <div class="loading-text"></div>
+              </td>
+            </tr>
+          </ng-template>
+
+        </p-table>
+
+      </div>
+    </div>
+
+    <div class="ui-g">
+      <div class="ui-g-6 ui-md-2">
+        <button pButton type="button" icon="fa fa-arrow-left" label="Voltar" class="ui-button-info"
+          [routerLink]="['/medicos']"></button>
+      </div>
+      <div class="ui-g-6 ui-md-offset-8 ui-md-2">
+        <button pButton type="submit" icon="{{ isEdit ? 'fa fa-pencil' : 'pi pi-plus' }}"
+          label="{{ isEdit ? 'Atualizar' : 'Cadastrar' }}" class="ui-button-success" [disabled]="!form.dirty"></button>
+      </div>
+    </div>
+  </div>
+</form>

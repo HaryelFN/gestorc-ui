@@ -1,0 +1,58 @@
+<div class="ui-fluid">
+  <div class="ui-g">
+    <div class="ui-g-8 ui-md-11">
+      <div style="position:relative">
+        <h2 style="margin-top: 0px">Especialidades</h2>
+      </div>
+    </div>
+    <div class="ui-g-4 ui-md-1" style="text-align:right">
+      <button pButton type="button" class="ui-button-success" icon="pi pi-plus" pTooltip="Adicionar"
+        tooltipPosition="top" *ngIf="auth.isAllowed('ROLE_ADD_ESPECIALIDADE')" [routerLink]="['/especialidades/novo']"
+        routerLinkActive="active">
+      </button>
+    </div>
+
+    <p-table 
+    [value]="records" 
+    [responsive]="false" 
+    [loading]="loading"
+    loadingIcon="fa fa-spinner">
+
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th>Nome</th>
+          <th style="width: 100px"></th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-rowData>
+        <tr>
+          <td>{{rowData.nome}}</td>
+          <td>
+            <a pButton style="margin-right: .30em" icon="fa fa-pencil" pTooltip="Editar" tooltipPosition="top"
+              [routerLink]="['/especialidades', rowData.id]"></a>
+            <button pButton class="ui-button-danger" type="button" icon="fa fa-trash-o" pTooltip="Excluir"
+              tooltipPosition="top" (click)="confirmDelete(rowData)"
+              [disabled]="!auth.isAllowed( 'ROLE_REMOVE_ESPECIALIDADE')"></button>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td [attr.colspan]="2">
+            Nenhuma especialidade encontrada.
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="loadingbody" let-columns="columns">
+        <tr style="height:34px">
+          <td *ngFor="let col of columns">
+            <div class="loading-text"></div>
+          </td>
+        </tr>
+      </ng-template>
+
+    </p-table>
+  </div>
