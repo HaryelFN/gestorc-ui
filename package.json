@@ -59,7 +59,7 @@
   },
   "devDependencies": {
     "@types/googlemaps": "^3.37.0",
-    "node-sass": "^4.13.1"
+    "node-sass": "^7.0.0"
   },
   "engines": {
     "node": "8.11.3",
